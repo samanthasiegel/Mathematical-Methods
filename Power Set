@@ -1,0 +1,21 @@
+
+/* Prints power set of given array of integers */
+/* For example, if the input array = [1, 2, 3], the function returns:
+[[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]] */
+
+public ArrayList<ArrayList<Integer>> printPowerSet(ArrayList<Integer> a, int index, ArrayList<ArrayList<Integer>> ans){
+		if(index>=a.size()){
+			return ans;
+		}
+		if(ans.isEmpty()){
+			ans.add(new ArrayList<Integer>());
+		}
+		ArrayList<ArrayList<Integer>> temp = new ArrayList<ArrayList<Integer>>();
+		for(int i = 0; i<ans.size(); i++){
+			ArrayList<Integer> curr  =new ArrayList<Integer>(ans.get(i));
+			curr.add(a.get(index));
+			temp.add(curr);
+		}
+		ans.addAll(temp);
+		return printPowerSet(a, index+1, ans);
+	}
