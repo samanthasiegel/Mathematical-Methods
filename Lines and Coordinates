@@ -1,0 +1,65 @@
+/*Structure to represent the equation for a line in the form y=mx+b*/
+public class Line{
+		public double slope, yint, xint;
+		public boolean isVertical;
+		public Line(double s, double y){
+			this.slope = s;
+			this.yint = y;
+		}
+		public Line(Coord c1, Coord c2){
+			if(c2.x-c1.x==0){
+				this.isVertical = true;
+				this.xint = c2.x;
+			}
+			else{
+				this.slope = (c2.y-c1.y)/(c2.x-c1.x);
+				this.yint = c2.y-(c2.x*slope);
+			}
+		}
+	}
+	
+	/*Given an array of coordinates, finds and returns the best fit line*/
+	public Line bestLine(ArrayList<Coord> coords){
+		Line best = null;
+		HashMap<Line, Integer> map = new HashMap<Line, Integer>();
+		for(int i =0; i<coords.size(); i++){
+			for(int j = i+1; j<coords.size(); j++){
+				Line line = new Line(coords.get(i), coords.get(j));
+				if(!map.keySet().contains(line)){
+					map.put(line, 0);
+				}
+				map.put(line, map.get(line)+1);
+				if(best==null || map.get(line)>map.get(best)){
+					best = line;
+				}
+			}
+		}
+		return best;
+	}
+}
+	
+	/*Structure to represent a coordinate in the x-y plane*/
+	public class Coord{
+		public double x, y;
+		public Coord(double xVal, double yVal){
+			this.x = xVal;
+			this.y = yVal;
+	
+	/*Finds and returns intersection of two lines*/	
+	public Coord findIntersection(Line l1, Line l2){
+		if(l1==null || l2==null){
+			return null;
+		}
+		double s = l1.slope - l2.slope;
+		if(s==0){
+			return null;
+		}
+		double i = l2.yint - l1.yint;
+		if(i==0){
+			return new Coord(0, l1.yint);
+		}
+		double xVal= i/s;
+		double yVal = (l1.slope*xVal)+l1.yint;
+		return new Coord(xVal, yVal);
+	}
+}
